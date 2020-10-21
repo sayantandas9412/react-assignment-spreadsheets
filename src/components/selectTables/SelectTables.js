@@ -32,7 +32,7 @@ const SelectTables = (props) => {
         <input
           type="text"
           placeholder="Filter"
-          onChange={handleFilterChange}
+          onChange={(e) => handleFilterChange(e.target.value)}
           value={inputFilterValue}
         />
       </div>

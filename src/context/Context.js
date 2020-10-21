@@ -16,7 +16,7 @@ class ContextProvider extends Component {
       selectedTable: "",
       columnPresent: false,
       columnsArray: [],
-      inputFilerValue: "",
+      inputFilterValue: "",
       selectedSource: "",
       selectedSourceTables: [],
       unfilteredTables: [],
@@ -182,17 +182,15 @@ class ContextProvider extends Component {
     this.props.history.push(`/selectSource/${sourceName}`);
   };
 
-  handleFilterChange = (e) => {
+  handleFilterChange = (value) => {
     let tables = this.state.selectedSourceTables;
-    this.setState({ inputFilerValue: e.target.value.toLowerCase() }, () => {
-      tables = this.state.selectedSourceTables.filter((table) => {
-        return table.title.toLowerCase().includes(this.state.inputFilerValue);
-      });
-      if (this.state.inputFilerValue) {
-        this.setState({ selectedSourceTables: tables });
-      } else {
-        this.setState({ selectedSourceTables: this.state.unfilteredTables });
-      }
+    this.setState({
+      inputFilterValue: value,
+      selectedSourceTables: value
+        ? tables.filter((table) => {
+            return table.title.toLowerCase().includes(value.toLowerCase());
+          })
+        : this.state.unfilteredTables,
     });
   };
   render() {
