@@ -1,0 +1,43 @@
+.selectSources-container {
+  width: 80%;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .selectSources-heading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .back-button {
+      position: absolute;
+      top: -12px;
+      left: 0;
+      font-size: 37px;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: #eee;
+        border-radius: 5px;
+      }
+    }
+    h1 {
+      margin-bottom: 25px;
+    }
+  }
+
+  .selectSources-source {
+    margin: 50px auto;
+    width: 600px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}

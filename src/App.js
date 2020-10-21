@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
+import Header from "./components/header/Header";
+import Home from "./components/home/Home";
+import SelectColumn from "./components/selectColumn/SelectColumn";
+import SelectSources from "./components/selectSources/SelectSources";
+import SelectTables from "./components/selectTables/SelectTables";
+import { Context } from "./context/Context";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  static contextType = Context;
+
+  render() {
+    const { columnsArray } = this.context;
+    return (
+      <div className="App">
+        <Header {...this.props} />
+        <Switch>
+          <Route exact path={"/"} render={() => <Home {...this.props} />} />
+          <Route
+            path="/selectSource/:source"
+            render={(props) => <SelectTables {...props} />}
+          />
+          <Route
+            path="/selectSource"
+            render={() => <SelectSources {...this.props} />}
+          />
+          <Route
+            path="/selectColumn"
+            render={() => (
+              <SelectColumn {...this.props} columnsArray={columnsArray} />
+            )}
+          />
+        </Switch>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default withRouter(App);

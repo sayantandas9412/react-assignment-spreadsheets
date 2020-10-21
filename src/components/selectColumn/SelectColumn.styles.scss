@@ -1,0 +1,14 @@
+.selectColumn-container {
+  margin: 50px auto;
+  text-align: center;
+
+  .column-items {
+    margin: 15px auto;
+    padding: 10px;
+    width: 250px;
+    border: 1px solid #eee;
+    list-style: none;
+    background-color: #eee;
+    cursor: pointer;
+  }
+}
