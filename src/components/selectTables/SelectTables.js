@@ -5,7 +5,7 @@ import "./SelectTables.styles.scss";
 
 const SelectTables = (props) => {
   const {
-    sources,
+    selectedSourceTables,
     inputFilterValue,
     handleTableClick,
     nextButtonDisabled,
@@ -14,39 +14,6 @@ const SelectTables = (props) => {
   } = useContext(Context);
 
   let sourceName = props.match.params.source;
-  const nestedSourcesCopy = JSON.parse(JSON.stringify(sources));
-
-  let selectedSourceTables = nestedSourcesCopy.find(
-    (source) => source.name === sourceName
-  ).tables;
-
-  let updatedTables = selectedSourceTables.map((table) => {
-    let title = table.title;
-    if (table.title.includes("||")) {
-      let index = table.title.indexOf("|");
-      title = table.title.slice(0, index);
-    }
-
-    return { title, id: table.id };
-  });
-
-  let tablesMap = new Map();
-
-  let uniqueTables = updatedTables.filter((table) => {
-    const title = tablesMap.get(table.title);
-    if (title) {
-      if (table.title === title) {
-        tablesMap.delete(table.title);
-        tablesMap.set(table.title, table.id);
-        return true;
-      } else {
-        return false;
-      }
-    }
-    tablesMap.set(table.title, table.id);
-    return true;
-  });
-
   return (
     <div className="selectTables-container">
       <div className="selectTables-heading">
@@ -70,7 +37,7 @@ const SelectTables = (props) => {
         />
       </div>
       <div className="selectTables-table">
-        {uniqueTables.map((table) => {
+        {selectedSourceTables.map((table) => {
           return (
             <SelectTable
               title={table.title}

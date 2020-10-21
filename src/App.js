@@ -6,6 +6,13 @@ import SelectColumn from "./components/selectColumn/SelectColumn";
 import SelectSources from "./components/selectSources/SelectSources";
 import SelectTables from "./components/selectTables/SelectTables";
 import { Context } from "./context/Context";
+import {
+  homepage,
+  error,
+  selectColumn,
+  selectSource,
+  selectTables,
+} from "./constants/routes";
 
 class App extends Component {
   constructor(props) {
@@ -20,17 +27,21 @@ class App extends Component {
       <div className="App">
         <Header {...this.props} />
         <Switch>
-          <Route exact path={"/"} render={() => <Home {...this.props} />} />
           <Route
-            path="/selectSource/:source"
+            exact
+            path={homepage}
+            render={() => <Home {...this.props} />}
+          />
+          <Route
+            path={selectTables}
             render={(props) => <SelectTables {...props} />}
           />
           <Route
-            path="/selectSource"
+            path={selectSource}
             render={() => <SelectSources {...this.props} />}
           />
           <Route
-            path="/selectColumn"
+            path={selectColumn}
             render={() => (
               <SelectColumn {...this.props} columnsArray={columnsArray} />
             )}

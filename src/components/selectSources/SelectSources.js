@@ -15,6 +15,7 @@ const SelectSources = (props) => {
     errorMessage,
     sources,
     handleFavoriteClick,
+    handleSourceClick,
   } = useContext(Context);
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const SelectSources = (props) => {
                   key={id}
                   id={id}
                   handleFavoriteClick={handleFavoriteClick}
+                  handleSourceClick={handleSourceClick}
                   favorite={favorite}
                   order={order}
                 />

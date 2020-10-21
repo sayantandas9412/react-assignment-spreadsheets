@@ -41,3 +41,16 @@
     flex-wrap: wrap;
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .selectSources-container {
+    width: 95%;
+    margin: 30px auto;
+
+    .selectSources-source {
+      margin: 40px auto;
+      width: 100%;
+      height: 300px;
+    }
+  }
+}

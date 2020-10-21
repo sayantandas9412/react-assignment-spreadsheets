@@ -6,9 +6,14 @@ import googleAdsLogo from "../../assets/google-ads-logo.png";
 import googleAnalyticsLogo from "../../assets/google-analytics-logo.png";
 import mailChimpLogo from "../../assets/mailchimp-logo.png";
 
-const SelectSource = ({ name, id, handleFavoriteClick, favorite, history }) => {
+const SelectSource = ({
+  name,
+  id,
+  handleFavoriteClick,
+  favorite,
+  handleSourceClick,
+}) => {
   let imageSource = "";
-
   if (id === 114) {
     imageSource = mailChimpLogo;
   } else if (id === 115) {
@@ -18,16 +23,11 @@ const SelectSource = ({ name, id, handleFavoriteClick, favorite, history }) => {
   } else {
     imageSource = googleAdsLogo;
   }
-
-  const handleSourceClick = () => {
-    history.push(`/selectSource/${name}`);
-  };
-
   let favorites = favorite ? "marked" : "un-marked";
   return (
     <div className="selectSource-container" id={id} onClick={handleSourceClick}>
-      <p>{name}</p>
-      <img src={imageSource} alt="source" />
+      <p id={id}>{name}</p>
+      <img src={imageSource} alt="source" id={id} />
       <div
         className={`favorite-icon ${favorites}`}
         onClick={handleFavoriteClick}

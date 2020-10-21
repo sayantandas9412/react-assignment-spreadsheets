@@ -36,3 +36,10 @@
     }
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .home-container {
+    width: 90%;
+    text-align: center;
+  }
+}

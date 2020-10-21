@@ -1,6 +1,7 @@
 import React, { Component, createContext } from "react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { tokenURL, GETrequestURL } from "../constants/api-urls";
 export const Context = createContext();
 
 class ContextProvider extends Component {
@@ -13,10 +14,12 @@ class ContextProvider extends Component {
       sources: [],
       defaultTimeStamp: new Date().toLocaleString(),
       selectedTable: "",
-      selectedTableId: "",
       columnPresent: false,
       columnsArray: [],
       inputFilerValue: "",
+      selectedSource: "",
+      selectedSourceTables: [],
+      unfilteredTables: [],
     };
   }
 
@@ -24,7 +27,7 @@ class ContextProvider extends Component {
     try {
       let tokenResponse = await axios({
         method: "post",
-        url: "https://api.airboxr.com/auth/loginWithEmail",
+        url: tokenURL,
         data: {
           email: "applicant@airboxr.com",
           password: "ZUSrS5jSZDvEPTyX",
@@ -34,11 +37,10 @@ class ContextProvider extends Component {
 
       let APIsource = await axios({
         method: "get",
-        url: "https://api.airboxr.com/data/dataStores",
+        url: GETrequestURL,
         headers: { Authorization: `Bearer ${token.accessToken}` },
       });
       let APIsourceResonse = await APIsource.data;
-
       let updatedSources = APIsourceResonse.map((source) => {
         return {
           ...source,
@@ -84,7 +86,6 @@ class ContextProvider extends Component {
     this.setState({
       nextButtonDisabled: false,
       selectedTable: e.target.value,
-      selectedTableId: e.target.id,
     });
   };
 
@@ -135,11 +136,65 @@ class ContextProvider extends Component {
     );
   };
 
-  // handleFilterChange = (e) => {
-  //   this.setState({ inputFilerValue: e.target.value }, () =>
+  handleSourceClick = (e) => {
+    const nestedSourcesCopy = JSON.parse(JSON.stringify(this.state.sources));
+    let selectedSource = nestedSourcesCopy.filter((source) => {
+      return source.id === Number(e.target.id);
+    });
 
-  //   );
-  // };
+    let sourceName = selectedSource[0].name;
+
+    let selectedSourceTables = nestedSourcesCopy.find(
+      (source) => source.name === sourceName
+    ).tables;
+
+    let updatedTables = selectedSourceTables.map((table) => {
+      let title = table.title;
+      if (table.title.includes("||")) {
+        let index = table.title.indexOf("|");
+        title = table.title.slice(0, index);
+      }
+      return { title, id: table.id };
+    });
+
+    let tablesMap = new Map();
+
+    let uniqueTables = updatedTables.filter((table) => {
+      const title = tablesMap.get(table.title);
+      if (title) {
+        if (table.title === title) {
+          tablesMap.delete(table.title);
+          tablesMap.set(table.title, table.id);
+          return true;
+        } else {
+          return false;
+        }
+      }
+      tablesMap.set(table.title, table.id);
+      return true;
+    });
+    this.setState({
+      selectedSource: sourceName,
+      selectedSourceTables: uniqueTables,
+      unfilteredTables: uniqueTables,
+    });
+
+    this.props.history.push(`/selectSource/${sourceName}`);
+  };
+
+  handleFilterChange = (e) => {
+    let tables = this.state.selectedSourceTables;
+    this.setState({ inputFilerValue: e.target.value.toLowerCase() }, () => {
+      tables = this.state.selectedSourceTables.filter((table) => {
+        return table.title.toLowerCase().includes(this.state.inputFilerValue);
+      });
+      if (this.state.inputFilerValue) {
+        this.setState({ selectedSourceTables: tables });
+      } else {
+        this.setState({ selectedSourceTables: this.state.unfilteredTables });
+      }
+    });
+  };
   render() {
     return (
       <Context.Provider
@@ -150,6 +205,7 @@ class ContextProvider extends Component {
           handleTableClick: this.handleTableClick,
           handleNextButtonClick: this.handleNextButtonClick,
           handleFilterChange: this.handleFilterChange,
+          handleSourceClick: this.handleSourceClick,
         }}
       >
         {this.props.children}
