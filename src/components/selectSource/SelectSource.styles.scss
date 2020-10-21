@@ -34,11 +34,13 @@
     opacity: 0.7;
     transition: all 0.3s;
 
-    &:hover,
-    &:active,
-    &:focus {
-      background-image: url("../../assets/favorite-icon-marked.png");
-      opacity: 1;
+    @media only screen and (min-width: 768px) {
+      &:hover,
+      &:active,
+      &:focus {
+        background-image: url("../../assets/favorite-icon-marked.png");
+        opacity: 1;
+      }
     }
   }
   .marked {
