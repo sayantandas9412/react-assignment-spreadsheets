@@ -8,7 +8,6 @@ import SelectTables from "./components/selectTables/SelectTables";
 import { Context } from "./context/Context";
 import {
   homepage,
-  error,
   selectColumn,
   selectSource,
   selectTables,
