@@ -30,3 +30,11 @@
     }
   }
 }
+@media only screen and (max-width: 500px) {
+  .selectColumn-container {
+    .back-button {
+      top: -49px;
+      left: 10px;
+    }
+  }
+}
